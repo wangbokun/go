@@ -2,7 +2,7 @@ package process
 
 import(
 	"fmt"
-	"github/wangbokun/go/file"
+	"github/wangbokun/go/types"
 )
 
 func CmdLine(pid int )(cmdLine string,err error){
@@ -11,7 +11,7 @@ func CmdLine(pid int )(cmdLine string,err error){
 
 	if !file.IsExist(fileName) {
 		
-		content,err	:=	file.FileToByte(fileName)
+		content,err	:=	types.FileToByte(fileName)
 
 		if err != nil {
 			return err
