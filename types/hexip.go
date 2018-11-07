@@ -4,6 +4,7 @@ import (
 	"strconv"
 	"net"
 	"fmt"
+	"strings"
 )
 
 
@@ -40,7 +41,7 @@ func HexToIP(s string) net.IP {
 	case 32:
 	 	return HexToIPv6(s)
 	default:
-		 return s
+		 return nil
 		 
 	}
 }
