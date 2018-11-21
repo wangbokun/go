@@ -2,6 +2,10 @@ package types
 
 import(
 	"os"
+	"path"
+	"bufio"
+        "fmt"
+	"path/filepath"
 	"io/ioutil"
 )
 
@@ -16,10 +20,6 @@ func IsExist(file string) bool{
 	return true
 }
 
-//return true 则是dir，反之file
-func DirOrFile(name string) bool{
-	return os.IsDir(name)
-}
 
 
 // create one file
@@ -53,36 +53,6 @@ func Unlink(fp string) error {
 }
 
 
-//获取文件夹下的list[文件/文件夹]
-
-// Name() string       // base name of the file
-// Size() int64        // length in bytes for regular files; system-dependent for others
-// Mode() FileMode     // file mode bits
-// ModTime() time.Time // modification time
-// IsDir() bool        // abbreviation for Mode().IsDir()
-// Sys() interface{}   // underlying data source (can return nil)
-
-func Dirlist(dirName string)([]byte,error)	{
-	
-	content,err := ioutil.ReadDir(dirName)
-
-	if err != nil	{
-		return err
-	}
-	return content
-}
-
-
-//读取整儿文件内容返回bytes
-func FileToByte(fileName string)([]byte,error)	{
-
-	content,err := ioutil.ReadFile(fileName)
-
-	if err != nil	{
-		return err
-	}
-	return content
-}
 
 
 // list dirs under dirPath
@@ -168,4 +138,17 @@ func SearchFile(filename string, paths ...string) (fullPath string, err error) {
 	}
 	err = fmt.Errorf("%s not found in paths", fullPath)
 	return
+}
+
+
+
+func ReadLine(r *bufio.Reader) ([]byte, error) {
+	line, isPrefix, err := r.ReadLine()
+	for isPrefix && err == nil {
+		var bs []byte
+		bs, isPrefix, err = r.ReadLine()
+		line = append(line, bs...)
+	}
+
+	return line, err
 }

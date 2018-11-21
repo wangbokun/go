@@ -1,7 +1,10 @@
 package types
 
 import(
+	"unsafe"
 	"strconv"
+	"encoding/json"
+	"reflect"
 	
 )
 
@@ -31,9 +34,23 @@ func Hex2dec(hexstr string) string{
     return strconv.FormatInt(i, 10)
 }
 
+
+// ToBytes interface => []byte
+func ToBytes(v interface{}) (Bytes, error) {
+	switch value := reflect.ValueOf(v); v.(type) {
+	case string:
+		return StringToBytes(value.String()), nil
+	case Bytes: //[]byte
+		return value.Bytes(), nil
+	default:
+		return json.Marshal(v)
+	}
+}
+
 // BytesToString byte => string
 // 直接转换底层指针，两者指向的相同的内存，改一个另外一个也会变。
 // 效率是string(Bytes{})的百倍以上，且转换量越大效率优势越明显。
+
 func BytesToString(b Bytes) string {
 	return *(*string)(unsafe.Pointer(&b))
 }
@@ -43,6 +60,7 @@ func BytesToString(b Bytes) string {
 // 效率是string(Bytes{})的百倍以上，且转换量越大效率优势越明显。
 // 转换之后若没做其他操作直接改变里面的字符，则程序会崩溃。
 // 如 b:=String2bytes("xxx"); b[1]='d'; 程序将panic。
+
 func StringToBytes(s string) Bytes {
 	x := (*[2]uintptr)(unsafe.Pointer(&s))
 	h := [3]uintptr{x[0], x[1], x[1]}
