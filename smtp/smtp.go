@@ -50,8 +50,8 @@ func SendMailNoAuth(){
     }
     defer c.Close()
     // Set the sender and recipient.
-    c.Mail("prometheus@nio.com")
-    c.Rcpt("bokun.wang@nio.com")
+    c.Mail("prometheus@xx.com")
+    c.Rcpt("bokun.wang@xx.com")
     // Send the email body.
     wc, err := c.Data()
     if err != nil {

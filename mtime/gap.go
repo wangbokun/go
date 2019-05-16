@@ -6,7 +6,7 @@ import(
 )
 
 func Gap(start_time, end_time string) string {
-	
+
 	t1, err := time.ParseInLocation("2006-01-02 15:04:05", start_time, time.Local)
 	t2, err := time.ParseInLocation("2006-01-02 15:04:05", end_time, time.Local)
 	if err == nil && t1.Before(t2) {
@@ -35,7 +35,7 @@ func getHourDiffer(start_time, end_time string) string {
 	t1, err := time.ParseInLocation("2006-01-02 15:04:05", start_time, time.Local)
 	t2, err := time.ParseInLocation("2006-01-02 15:04:05", end_time, time.Local)
 	if err == nil && t1.Before(t2) {
-		diff := t2.Unix() - t1.Unix() 
+		diff := t2.Unix() - t1.Unix()
 
 		if diff/60 < 60 {
 			return fmt.Sprintf("%d分钟", diff/60)
