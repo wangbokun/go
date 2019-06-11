@@ -20,6 +20,9 @@ func IsExist(file string) bool{
 	return true
 }
 
+func CreateDir(name string) error {
+	return os.MkdirAll(name,os.ModePerm)
+}
 
 
 // create one file
