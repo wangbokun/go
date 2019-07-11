@@ -40,3 +40,26 @@ func SendMail(authFile, body, from, subject string, to []string) error {
 			"\r\n"+body))
 	return err
 }
+
+
+
+func SendMailNoAuth(){
+	c, err := smtp.Dial("smtp.nevint.com:25")
+    if err != nil {
+        log.Fatal(err)
+    }
+    defer c.Close()
+    // Set the sender and recipient.
+    c.Mail("prometheus@xx.com")
+    c.Rcpt("bokun.wang@xx.com")
+    // Send the email body.
+    wc, err := c.Data()
+    if err != nil {
+        log.Fatal(err)
+    }
+    defer wc.Close()
+    buf := bytes.NewBufferString("This is the email body.")
+    if _, err = buf.WriteTo(wc); err != nil {
+        log.Fatal(err)
+    }
+}
