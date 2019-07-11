@@ -4,10 +4,20 @@ import(
 	"os"
 	"path"
 	"bufio"
-        "fmt"
+	"fmt"
+	"github.com/wangbokun/go/log"
 	"path/filepath"
 	"io/ioutil"
 )
+
+// File file
+type File struct {
+	name  string
+	model int
+	fd    *os.File
+	seek  int64
+}
+
 
 //判断文件目录是否存在
 func IsExist(file string) bool{
@@ -154,4 +164,47 @@ func ReadLine(r *bufio.Reader) ([]byte, error) {
 	}
 
 	return line, err
+}
+
+// fileName:文件名字(带全路径)
+// content: 写入的内容
+func appendToFile(fileName string, content string) error {
+	// 以只写的模式，打开文件
+	f, err := os.OpenFile(fileName, os.O_WRONLY, 0644)
+	if err != nil {
+	   fmt.Println("cacheFileList.yml file create failed. err: " + err.Error())
+	} else {
+	   // 查找文件末尾的偏移量
+	   n, _ := f.Seek(0, os.SEEK_END)
+	   // 从末尾的偏移量开始写入内容
+	   _, err = f.WriteAt([]byte(content), n)
+	}  
+
+	defer f.Close()   
+	return err
+
+}
+
+// Open open
+func (f *File) Open() (err error) {
+	f.fd, err = os.OpenFile(f.name, f.model, 0660)
+	if err != nil {
+		log.Error("<file %s can not open>:%v", f.name, err)
+		return
+	}
+	return
+}
+
+
+func (f *File) Read(p []byte) (int, error) {
+	return f.fd.Read(p)
+}
+
+func (f *File) Write(p []byte) (int, error) {
+	return f.fd.Write(p)
+}
+
+// Close close
+func (f *File) Close() error {
+	return f.fd.Close()
 }
