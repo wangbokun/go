@@ -3,6 +3,8 @@ package types
 import(
 	"unsafe"
 	"strconv"
+	"strings"
+	"regexp"
 	"encoding/json"
 	"reflect"
 	
@@ -65,4 +67,17 @@ func StringToBytes(s string) Bytes {
 	x := (*[2]uintptr)(unsafe.Pointer(&s))
 	h := [3]uintptr{x[0], x[1], x[1]}
 	return *(*Bytes)(unsafe.Pointer(&h))
+}
+
+
+func StringToLower(s string) string{
+	return strings.ToLower(s)
+}
+
+func FindString(regStr, s string) bool{
+	match, _ := regexp.MatchString(regStr, s)
+	if match {
+		return true
+	}
+	return false
 }
