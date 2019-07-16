@@ -27,7 +27,7 @@ func Post(Url, Content string) {
 }
 
 
-func Get(Url string) (ctx interface{},err error){
+func Get(Url string) (ctx []byte,err error){
 
 	if strings.HasPrefix(Url, "http://") == false{
 		Url = "http://"+Url
