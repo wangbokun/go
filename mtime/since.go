@@ -43,3 +43,34 @@ func GetSinceWeek() int64{
 
    return t.Unix()/int64(secondsPerWeek)
 }
+
+func GetSinceMonth() int64{
+    var index int
+    year := time.Now().Year()
+    var months = [...]string{
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+    }
+
+    for k,i := range  months{
+        if time.Now().Month().String() == i{
+            index = k+1
+            continue
+        }
+    }
+    return int64((year-1970)*12+index)
+}
+
+func GetSinceYear() int64{
+   return int64(time.Now().Year() - 1970)
+}
