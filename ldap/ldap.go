@@ -2,7 +2,7 @@ package ldap
 
 import (
 	"fmt"
-	"go/codec"
+	"github.com/wangbokun/go/codec"
  	"gopkg.in/ldap.v2"
  	"github.com/wangbokun/go/log"
 )
