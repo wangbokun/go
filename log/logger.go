@@ -3,6 +3,7 @@ package log
 import (
 	"fmt"
 	"os"
+	// "time"
 )
 
 var (
@@ -52,12 +53,23 @@ func DelLogger(name string) {
 }
 
 func init() {
+
 	_Default = "__ROOT__"
 	Logger = make(map[string]*Log)
 
 	root := NewLog("__ROOT__", os.Stderr)
+
+	
 	root.SetFormatter(NewTextFormat(DEFAULTFORMAT, ModeColor))
 	root.SetTimeFormat("2006-01-02 15:04:05.000")
 	root.SetCallDepth(3)
 	AddLogger(root)
+
+	// filename:="logs/"+time.Now().Format("2006-01-02")+".log"
+	// os.MkdirAll("logs",0755)
+	// file := NewFile(filename)	
+	// file.SetMaxBytes(100)
+	// mylogs := NewLog(filename, file)
+	// mylogs.SetFormatter(NewTextFormat(DEFAULTFORMAT, ModeColor))
+	// AddLogger(mylogs)
 }
