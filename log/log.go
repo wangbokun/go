@@ -89,6 +89,7 @@ func (l *Log) SetCallDepth(depth int) {
 	l.depth = depth
 }
 
+
 // Output writes the output for a logging event.
 func (l *Log) Output(lv uint8, format string, v ...interface{}) {
 	l.mux.Lock()
@@ -151,3 +152,11 @@ func (l *Log) Panic(format string, v ...interface{}) {
 func (l *Log) Errorf(format string, v ...interface{}) error {
 	return fmt.Errorf(format, v...)
 }
+
+// func Init()  *Log {
+// 	fmt.Println("=========00000000")
+// 	os.MkdirAll("logs",0644)
+// 	filename:="logs/"+time.Now().Format("2006-01-02")+".log"
+// 	file := NewFile(filename)	
+// 	return NewLog(filename, file)
+// }

@@ -4,6 +4,7 @@ import (
 	"path"
 	"strconv"
 	"strings"
+	"time"
 )
 
 // Record defines a log message event.
@@ -26,8 +27,9 @@ type Record struct {
 // FILE: log filename
 // LINE: log line
 // MESSAGE: log message
+
 func (rcd *Record) Format(str string) string {
-	str = strings.Replace(str, "TIME", rcd.Time, -1)
+	str = strings.Replace(str, "TIME", time.Now().Format("2006-01-02 15:04:05"), -1)
 	str = strings.Replace(str, "LEVEL", LevelMap[rcd.Level], -1)
 	str = strings.Replace(str, "MODULE", rcd.Module, -1)
 	str = strings.Replace(str, "FUNCNAME", FuncName(rcd.FuncPtr), -1)
