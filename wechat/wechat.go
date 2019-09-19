@@ -4,7 +4,8 @@ package wechat
 import (
 	"fmt"
 	"net/http"
-	"go-common/project/ops/prometheusWebHook/models/httpclient"
+	"github.com/wangbokun/go/http/client"
+
 	"go-common/project/ops/prometheusWebHook/models/ldap"
 	"go-common/project/ops/OMS/libs/types"
 	"go-common/project/ops/prometheusWebHook/models/conf"
@@ -58,9 +59,8 @@ func WechatSendMsg(user,ctx,token,apiUrl,agentId string){
 	if err!=nil{
 		log.Error("to string faild, Error: %s",err )
 	}
- 
-	resp, error := gohttp.NewClient().Url(postMessageURL).Body(s).Header("Content-Type", "application/json;charset=utf-8").Post()
-	
+
+ 	resp, error := client.Post(postMessageURL,"application/json;charset=utf-8",s)
 	if error!=nil{
 		log.Error("wechat send  post faild, Error: %s",error )
 	}
