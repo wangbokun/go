@@ -1,7 +1,7 @@
 package wechat
 
 import ( 
-	"github.com/wangbokun/go/http"
+	"github.com/wangbokun/go/http/client"
 	"github.com/wangbokun/go/types"
 )
 
@@ -17,7 +17,7 @@ type Token struct{
 
 func GetToken(corpid,corpsecret string) (string,error) {
 	Url:=wechartUrl+corpid+"&corpsecret="+corpsecret
-	ctx,err:=http.Get(Url)
+	ctx,err:=client.Get(Url)
 	if err != nil{
 		return "err",err
 	}
