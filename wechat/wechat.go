@@ -10,7 +10,7 @@ import (
 	"go-common/project/ops/OMS/libs/types"
 	"go-common/project/ops/prometheusWebHook/models/conf"
 	"io/ioutil"
-	"github.com/luopengift/gohttp"
+	// "github.com/luopengift/gohttp"
 	"github.com/wangbokun/go/log"
 	
 )
@@ -65,7 +65,7 @@ func WechatSendMsg(user,ctx,token,apiUrl,agentId string){
 		log.Error("wechat send  post faild, Error: %s",error )
 	}
 
-	log.Debug("wechat send  status: %s",resp.String() )
+	log.Debug("wechat send  status: %s",resp)
 }
 
 
@@ -104,7 +104,7 @@ func WechatWriteUserHandler(w http.ResponseWriter, r *http.Request){
 		fmt.Println(error)
 	} 
 
-	Username := userInfo.User + "@nio.com"
+	Username := userInfo.User + "@xx.com"
 	
 	userMail,mobile :=ldap.LdapSearch(
 		Username, config.Addr, config.Port, config.BindDn, config.BindPass,
@@ -131,12 +131,17 @@ func WechatWriteUserHandler(w http.ResponseWriter, r *http.Request){
 		fmt.Println(err)
 	}
  
-	resp, _ := gohttp.NewClient().Url(postMessageURL).Body(s).Header("Content-Type", "application/json;charset=utf-8").Post()
-	fmt.Println(resp.String())
+	resp, error := client.Post(postMessageURL,"application/json;charset=utf-8",s)
+
+	if err!=nil{
+		fmt.Println(err)
+	}
+
+	fmt.Println(resp)
 }
 
 func WechatReadUser(user,token,apiUrl string){
 	
 	URL := apiUrl + "user/get?access_token=" + token +"&userid="+user
-	httpclient.HttpClientGet(URL)
+	client.Get(URL)
 }
