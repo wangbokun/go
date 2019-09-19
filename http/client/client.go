@@ -1,33 +1,31 @@
 package client
 
-import (
-	"fmt"
-	"io/ioutil"
-	"log"
+import ( 
+	"io/ioutil" 
 	"net/http"
 	"strings"
 )
 
-func Post(Url, Content string) {
-
+func Post(Url, ContentType , Content string) (body []byte,err error){
+	// ContentType :  application/x-www-form-urlencoded  or  application/json;charset=utf-8
 	resp, err := http.Post(Url,
-		"application/x-www-form-urlencoded",
+		ContentType,
 		strings.NewReader(Content))
-	if err != nil {
-		fmt.Println(err)
+	if err != nil { 
+		return nil, err
 	}
 
 	defer resp.Body.Close()
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		log.Fatalln(err)
+	body, err = ioutil.ReadAll(resp.Body)
+	if err != nil { 
+		return nil, err
 	}
 
-	fmt.Println(string(body))
+ 	return body, nil
 }
 
 
-func Get(Url string) (ctx []byte,err error){
+func Get(Url string) (body []byte,err error){
 
 	if strings.HasPrefix(Url, "http://") == false{
 		Url = "http://"+Url
@@ -39,7 +37,7 @@ func Get(Url string) (ctx []byte,err error){
 	}
 
 	defer resp.Body.Close()
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err = ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return nil,err
 	}
