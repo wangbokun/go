@@ -27,9 +27,9 @@ func Post(Url, ContentType , Content string) (body []byte,err error){
 
 func Get(Url string) (body []byte,err error){
 
-	if strings.HasPrefix(Url, "http://") == false{
-		Url = "http://"+Url
-	}
+	// if strings.HasPrefix(Url, "http://") == false{
+	// 	Url = "http://"+Url
+	// }
 	resp, err := http.Get(Url)
 
 	if err != nil {
