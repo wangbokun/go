@@ -13,18 +13,26 @@ type WechatToken struct {
 }
 
 type weChatMessage struct {
-	Text    weChatMessageContent `yaml:"text,omitempty" json:"text,omitempty"`
-	ToUser  string               `yaml:"touser,omitempty" json:"touser,omitempty"`
-	ToParty string               `yaml:"toparty,omitempty" json:"toparty,omitempty"`
-	Totag   string               `yaml:"totag,omitempty" json:"totag,omitempty"`
-	AgentID string               `yaml:"agentid,omitempty" json:"agentid,omitempty"`
-	Safe    string               `yaml:"safe,omitempty" json:"safe,omitempty"`
-	Type    string               `yaml:"msgtype,omitempty" json:"msgtype,omitempty"`
+	Text        textMessageContent 				 `yaml:"text,omitempty" json:"text,omitempty"`
+	// Taskcard  	taskcardMessageContent  		 `yaml:"text,omitempty" json:"text,omitempty"`
+	ToUser      string               			 `yaml:"touser,omitempty" json:"touser,omitempty"`
+	ToParty 	string               			 `yaml:"toparty,omitempty" json:"toparty,omitempty"`
+	Totag   	string              			 `yaml:"totag,omitempty" json:"totag,omitempty"`
+	AgentID 	string               		   	 `yaml:"agentid,omitempty" json:"agentid,omitempty"`
+	Safe    	string              			 `yaml:"safe,omitempty" json:"safe,omitempty"`
+	Type   	 	string              		 	 `yaml:"msgtype,omitempty" json:"msgtype,omitempty"`
 }
 
-type weChatMessageContent struct {
+
+
+type textMessageContent struct {
 	Content string `json:"content"`
 }
+
+// type taskcardMessageContent struct {
+// 	Title 		string `json:"title"`
+// 	Description string `json:"description"`
+// }
 
 type weChatResponse struct {
 	Code  int    `json:"code"`
@@ -35,7 +43,7 @@ type weChatResponse struct {
 func SendMsg(user, msgType, ctx,token,agentId string){
 	
 	msg := &weChatMessage{
-		Text: weChatMessageContent{
+		Text: textMessageContent{
 			Content: ctx,
 		},
 		ToUser:  user,
