@@ -1,16 +1,9 @@
 package wechat
 
 
-import (
-	"fmt"
-	"net/http"
-	"github.com/wangbokun/go/http/client"
-
-	"go-common/project/ops/prometheusWebHook/models/ldap"
-	"go-common/project/ops/OMS/libs/types"
-	"go-common/project/ops/prometheusWebHook/models/conf"
-	"io/ioutil"
-	// "github.com/luopengift/gohttp"
+import ( 
+	"github.com/wangbokun/go/http/client" 
+	"github.com/wangbokun/go/types"
 	"github.com/wangbokun/go/log"
 	
 )
@@ -39,7 +32,7 @@ type weChatResponse struct {
 }
 
 
-func WechatSendMsg(user,ctx,token,apiUrl,agentId string){
+func WechatSendMsg(user, msgType, ctx,token,agentId string){
 	
 	msg := &weChatMessage{
 		Text: weChatMessageContent{
@@ -49,99 +42,19 @@ func WechatSendMsg(user,ctx,token,apiUrl,agentId string){
 		ToParty: "",
 		Totag:   "",
 		AgentID: agentId,
-		Type:    "text",
+		Type:    msgType, // msgType: text taskcard  markdown ...
 		Safe:    "0",
-	}
-
-	postMessageURL := apiUrl + "message/send?access_token=" + token
+	} 
  
 	s,err:=types.ToString(msg)
 	if err!=nil{
 		log.Error("to string faild, Error: %s",err )
 	}
 
- 	resp, error := client.Post(postMessageURL,"application/json;charset=utf-8",s)
+ 	resp, error := client.Post(wxSendTextUrl + token,"application/json;charset=utf-8",s)
 	if error!=nil{
-		log.Error("wechat send  post faild, Error: %s",error )
+		log.Error("wechat send  faild, Error: %s",error )
 	}
 
 	log.Debug("wechat send  status: %s",resp)
-}
-
-
-type weChatUser struct {
-	Userid  	string               `yaml:"userid,omitempty" json:"userid,omitempty"`
-	Name 		string               `yaml:"name,omitempty" json:"name,omitempty"`
-	Email		string               `yaml:"email,omitempty" json:"email,omitempty"`
-	Mobile   	string               `yaml:"mobile,omitempty" json:"mobile,omitempty"`
-	Department  string               `yaml:"department,omitempty" json:"department,omitempty"`
-}
-
-
-func WechatWriteUserHandler(w http.ResponseWriter, r *http.Request){
-// func WechatWriteUserHandler(user,name,mobile,token,apiUrl string){
-	b, err := ioutil.ReadAll(r.Body)
-	
-	if err != nil {
-		panic(err)
-	}
-	defer r.Body.Close()
-	m, err := types.BytesToMap(b) 
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	config := &conf.ConfigInfo{}
-	err = types.ParseConfigFile("./etc/webhook.json", config)
-	if err != nil {
-		log.Error("%s",err)
-	}
-
-	userInfo := conf.WechatUser{}
-	error := types.Format(m, &userInfo)
-
-	if error != nil {
-		fmt.Println(error)
-	} 
-
-	Username := userInfo.User + "@xx.com"
-	
-	userMail,mobile :=ldap.LdapSearch(
-		Username, config.Addr, config.Port, config.BindDn, config.BindPass,
-		config.BaseDn, config.AuthFilter, config.Attributes)
-		
-	fmt.Println(">>>>>>>>>>",userInfo.User,userMail,mobile)
-	token,err := GetToken(config.WechatApiCorpId,config.WechatUserSecret)	
-	if err != nil {
-		log.Error("%s",err)
-	}
-	
-	msg := &weChatUser{
-		Userid: userInfo.User,
-		Name: userInfo.User,
-		Email: userMail,
-		Mobile: mobile,
-		Department: "1",
-	}
-
-	postMessageURL := config.WechatApiUrl + "user/create?access_token=" + token
- 
-	s,err:=types.ToString(msg)
-	if err!=nil{
-		fmt.Println(err)
-	}
- 
-	resp, error := client.Post(postMessageURL,"application/json;charset=utf-8",s)
-
-	if err!=nil{
-		fmt.Println(err)
-	}
-
-	fmt.Println(resp)
-}
-
-func WechatReadUser(user,token,apiUrl string){
-	
-	URL := apiUrl + "user/get?access_token=" + token +"&userid="+user
-	client.Get(URL)
 }

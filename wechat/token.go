@@ -5,9 +5,7 @@ import (
 	"github.com/wangbokun/go/types"
 )
 
-const (
-	wechartUrl = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid="
-)
+
 type Token struct{
 	Errcode 		int 		`json:"errcode"`
 	Errmsg  		string 		`json:"errmsg"`
@@ -16,7 +14,7 @@ type Token struct{
 }
 
 func GetToken(corpid,corpsecret string) (string,error) {
-	Url:=wechartUrl+corpid+"&corpsecret="+corpsecret
+	Url:=wxTokenUrl+corpid+"&corpsecret="+corpsecret
 	ctx,err:=client.Get(Url)
 	if err != nil{
 		return "err",err
