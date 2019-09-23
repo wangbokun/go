@@ -32,7 +32,7 @@ type weChatResponse struct {
 }
 
 
-func WechatSendMsg(user, msgType, ctx,token,agentId string){
+func SendMsg(user, msgType, ctx,token,agentId string){
 	
 	msg := &weChatMessage{
 		Text: weChatMessageContent{
