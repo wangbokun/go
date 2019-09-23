@@ -40,7 +40,7 @@ type weChatResponse struct {
 }
 
 
-func SendMsg(user, msgType, ctx,token,agentId string){
+func SendMsg(user, ctx, token, agentId string){
 	
 	msg := &weChatMessage{
 		Text: textMessageContent{
@@ -50,7 +50,7 @@ func SendMsg(user, msgType, ctx,token,agentId string){
 		ToParty: "",
 		Totag:   "",
 		AgentID: agentId,
-		Type:    msgType, // msgType: text taskcard  markdown ...
+		Type:    "text", // msgType: text taskcard  markdown ...
 		Safe:    "0",
 	} 
  
