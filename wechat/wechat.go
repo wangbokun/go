@@ -28,11 +28,7 @@ type weChatMessage struct {
 type textMessageContent struct {
 	Content string `json:"content"`
 }
-
-// type taskcardMessageContent struct {
-// 	Title 		string `json:"title"`
-// 	Description string `json:"description"`
-// }
+ 
 
 type weChatResponse struct {
 	Code  int    `json:"code"`
