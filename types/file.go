@@ -168,7 +168,7 @@ func ReadLine(r *bufio.Reader) ([]byte, error) {
 
 // fileName:文件名字(带全路径)
 // content: 写入的内容
-func appendToFile(fileName string, content string) error {
+func AppendToFile(fileName string, content string) error {
 	// 以只写的模式，打开文件
 	f, err := os.OpenFile(fileName, os.O_WRONLY, 0644)
 	if err != nil {
