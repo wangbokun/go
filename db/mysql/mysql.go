@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"go/codec"
+	"github.com/wangbokun/go/codec"
 	"github.com/wangbokun/go/log"
 	// mysql driver
 	_ "github.com/go-sql-driver/mysql"
