@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"go/codec"
+	"github.com/wangbokun/go/codec"
 	"github.com/wangbokun/go/log"
 	// mysql driver
 	_ "github.com/go-sql-driver/mysql"
@@ -174,7 +174,7 @@ func (my *MySQL) Get(ctx context.Context, cmd string, handle func(row map[string
 				if values[i] != nil {
 					result[cols[i].Name()] = string(values[i].([]byte))
 				}
-			case "NullInt64", "int", "int8", "int32", "uint32":
+			case "NullInt64", "int", "int8", "int32", "int64","uint32":
 				if values[i] != nil {
 					result[cols[i].Name()], err = strconv.Atoi(string(values[i].([]byte)))
 					if err != nil {
