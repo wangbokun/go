@@ -123,7 +123,7 @@ func (my *MySQL) Update(ctx context.Context, table string, v interface{}, cond m
 	}
 	for key, value := range cond {
         if strings.Contains(key, " IN ") || strings.Contains(key, " in "){
-            str := fmt.Sprintf("%s %s",key,value)
+            	    str := fmt.Sprintf("%s %s",key,value)
 		    condList = append(condList, str)
 		    valueList = append(valueList, value)
         }else{
