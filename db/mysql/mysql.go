@@ -122,9 +122,13 @@ func (my *MySQL) Update(ctx context.Context, table string, v interface{}, cond m
 		valueList = append(valueList, value)
 	}
 	for key, value := range cond {
-		condList = append(condList, fmt.Sprintf("`%s` = ?", key))
-		valueList = append(valueList, value)
-
+        if strings.Contains(key, " IN ") || strings.Contains(key, " in "){
+            str := fmt.Sprintf("%s %s",key,value)
+		    valueList = append(valueList, value)
+        }else{
+		    condList = append(condList, fmt.Sprintf("`%s` = ?", key))
+		    valueList = append(valueList, value)
+        }
 	}
 	cmd := fmt.Sprintf("UPDATE %s SET %s WHERE %s", table, strings.Join(keyList, ","), strings.Join(condList, " AND "))
 	return my.Exec(ctx, cmd, valueList...)
