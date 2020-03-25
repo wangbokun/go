@@ -29,7 +29,6 @@ func (l *Ldap) Init(Opts ...Option) {
 
 
 func (l *Ldap) LoadConfig(v interface{}) error {
-	log.Debug("%#v",codec.NewJSONCodec().Format(&l.Opts, v))
 	return codec.NewJSONCodec().Format(&l.Opts, v)
 }
 
@@ -40,14 +39,14 @@ func (l *Ldap) Connect() (err error){
 	}
 	err = l.LdapConn.Bind(l.Opts.BindDn, l.Opts.BindPass)
 	if err != nil {
-		log.Error("%s",err) 
+		log.Error("%s",err)
 	}
 	return nil
 }
 //AuthFilter user: (&(objectClass=organizationalPerson)(sAMAccountName=%s))
 //AuthFilter all user: "(&(objectClass=user))"
 func (l *Ldap) Search() (*ldap.SearchResult, error) {
-	
+
 	// conn, err := ldap.Dial("tcp", l.Opts.Server)
 	// if err != nil {
  	// 	return nil, err
@@ -56,8 +55,8 @@ func (l *Ldap) Search() (*ldap.SearchResult, error) {
 
 	// err = conn.Bind(l.Opts.BindDn, l.Opts.BindPass)
 	// if err != nil {
-	// 	log.Error("%s",err) 
-	// } 
+	// 	log.Error("%s",err)
+	// }
   	searchRequest := ldap.NewSearchRequest(
 		l.Opts.BaseDN, // The base dn to search
 		ldap.ScopeWholeSubtree,ldap.NeverDerefAliases,0,0,false,
@@ -80,7 +79,7 @@ func (l *Ldap) Auth(username, password string) error {
  	// 	return err
 	// }
 	// defer conn.Close()
- 
+
 	// err = conn.Bind(l.Opts.BindDn, l.Opts.BindPass)
 	// if err != nil {
 	// 	return err
@@ -92,12 +91,12 @@ func (l *Ldap) Auth(username, password string) error {
 		fmt.Sprintf(l.Opts.AuthFilter, username),
 		[]string{"dn","cn"}, // A list attributes to retrieve
 		nil,
-	) 
-	
+	)
+
 	sr, err := l.LdapConn.Search(searchRequest)
 	if err != nil {
  		return err
-	} 
+	}
 
  	if len(sr.Entries) != 1 {
 		return fmt.Errorf("user is not exist")
