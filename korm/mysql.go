@@ -19,7 +19,19 @@ type Database interface {
 // // MySQL mysql
 type MySQL struct {
 	opts Options
+	db *sql.DB
 }
+
+
+// New file config
+func New(opts ...Option) *MySQL {
+	options := NewOptions(opts...)
+	return &MySQL{
+		opts: options,
+		// Log:  log.DefaultStdLog(),
+	}
+}
+
 
 
 // Init init
@@ -61,4 +73,9 @@ func (my *MySQL) LoadConfig(v interface{}) error {
 func (*MySQL) Open(dbType string, conn string) (db *gorm.DB, err error) {
 	eloquent, err := gorm.Open(dbType, conn)
 	return eloquent, err
+}
+
+// Close close connect
+func (my *MySQL) Close() error {
+	return my.db.Close()
 }
