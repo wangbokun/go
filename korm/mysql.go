@@ -9,13 +9,12 @@ import (
 	"github.com/wangbokun/go/codec"
 )
 
-var Eloquent *gorm.DB
-
 
 // // MySQL mysql
 type MySQL struct {
 	opts Options
 	db *sql.DB
+    Eloquent *gorm.DB
 }
 
 
