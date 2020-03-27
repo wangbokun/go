@@ -2,19 +2,15 @@ package korm
 
 import (
 	"fmt"
+    "database/sql"
 	_ "github.com/go-sql-driver/mysql" //加载mysql
 	"github.com/jinzhu/gorm"
 	"github.com/wangbokun/go/log"
-	"strconv"
 	"github.com/wangbokun/go/codec"
 )
 
 var Eloquent *gorm.DB
 
-
-type Database interface {
-	Open(dbType string, conn string) (db *gorm.DB, err error)
-}
 
 // // MySQL mysql
 type MySQL struct {
@@ -28,7 +24,6 @@ func New(opts ...Option) *MySQL {
 	options := NewOptions(opts...)
 	return &MySQL{
 		opts: options,
-		// Log:  log.DefaultStdLog(),
 	}
 }
 
@@ -42,25 +37,24 @@ func (my *MySQL) Init(opts ...Option) {
 }
 
 
-func (my *MySQL)Connect() {
+func (my *MySQL)Connect() error {
 
 	// "user:password@/dbname?charset=utf8&parseTime=True&loc=Local"
-	Eloquent, err = db.Open(dbType, 
-		fmt.Sprintf("%s:%s@/%s?charset=utf8&parseTime=True&loc=%s:%s",
-			my.opts.Username, my.opts.Password, my.opts.Database,  my.opts.Hostname, strconv.Itoa(my.opts.Port)
-		)
-	)
+    dsn := fmt.Sprintf("%s:%s@tcp(%s:%v)/%s?charset=utf8", my.opts.Username, my.opts.Password, my.opts.Hostname, my.opts.Port, my.opts.Database)
+    Eloquent, err := my.Open(my.opts.DbType,dsn)
 	Eloquent.LogMode(true)
 
 	if err != nil {
-		log.Fatalln("mysql connect error %v", err)
+		log.Error("mysql connect error %v", err)
+        return err
 	} else {
-		log.Println("mysql connect success!")
+		log.Info("mysql connect success!")
 	}
 
 	if Eloquent.Error != nil {
-		log.Fatalln("database error %v", Eloquent.Error)
+		log.Error("database error %v", Eloquent.Error)
 	}
+    return nil
 }
 
 
