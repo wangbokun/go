@@ -23,6 +23,17 @@ type MySQL struct {
 }
 
 
+// New file config
+func New(opts ...Option) *MySQL {
+	options := NewOptions(opts...)
+	return &MySQL{
+		opts: options,
+		// Log:  log.DefaultStdLog(),
+	}
+}
+
+
+
 // Init init
 func (my *MySQL) Init(opts ...Option) {
 	for _, o := range opts {
