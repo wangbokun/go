@@ -119,7 +119,6 @@ func (my *MySQL) Update(ctx context.Context, table string, v interface{}, cond m
 		    valueList = append(valueList, value)
 	}
 	cmd := fmt.Sprintf("UPDATE %s SET %s WHERE %s", table, strings.Join(keyList, ","), strings.Join(condList, " AND "))
-	log.Debug("update cmd is :%s",cmd)
 	return my.Exec(ctx, cmd, valueList...)
 }
 
