@@ -21,7 +21,6 @@ func genSQL(cmd string, v ...interface{}) string {
 // MySQL mysql
 type MySQL struct {
 	opts Options
-	// Log  core.Logger
 	db   *sql.DB
 }
 // New file config
@@ -29,7 +28,6 @@ func New(opts ...Option) *MySQL {
 	options := NewOptions(opts...)
 	return &MySQL{
 		opts: options,
-		// Log:  log.DefaultStdLog(),
 	}
 }
 
@@ -39,11 +37,6 @@ func (my *MySQL) Init(opts ...Option) {
 		o(&my.opts)
 	}
 }
-
-// SetLog set log
-// func (my *MySQL) SetLog(log core.Logger) {
-// 	my.Log = log
-// }
 
 // LoadConfig loadconfig
 func (my *MySQL) LoadConfig(v interface{}) error {
