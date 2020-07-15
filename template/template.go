@@ -15,6 +15,7 @@ func RenderTemplate(file string, v interface{}) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	t.Option("missingkey=zero")
 	var buf bytes.Buffer
 	err = t.Execute(&buf, v)
 	return buf.String(), err
