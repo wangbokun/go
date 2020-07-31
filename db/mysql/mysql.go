@@ -123,17 +123,17 @@ func (my *MySQL) Update(ctx context.Context, table string, v interface{}, cond m
 }
 
 // Upset update if exist or insert, true is insert, false is update
-func (my *MySQL) Upset(ctx context.Context, table string, v interface{}, cond map[string]interface{}) (bool, error) {
+func (my *MySQL) Upset(ctx context.Context, table string, v interface{}, cond map[string]interface{}) (bool, error, sql.Result) {
 	result, err := my.Update(ctx, table, v, cond)
 	if err != nil {
-		return false, err
+		return false, err, nil
 	}
 	if n, err := result.RowsAffected(); err != nil || n != 0 {
-		return false, err
+		return false, err, result
 	}
 
-	_, err = my.Put(ctx, table, v)
-	return true, err
+	res, err := my.Put(ctx, table, v)
+	return true, err, res
 }
 
 // Get get data
