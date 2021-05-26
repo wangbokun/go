@@ -47,16 +47,6 @@ func (l *Ldap) Connect() (err error){
 //AuthFilter all user: "(&(objectClass=user))"
 func (l *Ldap) Search() (*ldap.SearchResult, error) {
 
-	// conn, err := ldap.Dial("tcp", l.Opts.Server)
-	// if err != nil {
- 	// 	return nil, err
-	// }
-	// defer l.conn.Close()
-
-	// err = conn.Bind(l.Opts.BindDn, l.Opts.BindPass)
-	// if err != nil {
-	// 	log.Error("%s",err)
-	// }
   	searchRequest := ldap.NewSearchRequest(
 		l.Opts.BaseDN, // The base dn to search
 		ldap.ScopeWholeSubtree,ldap.NeverDerefAliases,0,0,false,
@@ -74,16 +64,7 @@ func (l *Ldap) Search() (*ldap.SearchResult, error) {
 }
 
 func (l *Ldap) Auth(username, password string) error {
- 	// conn, err := ldap.Dial("tcp", l.Opts.Server)
-	// if err != nil {
- 	// 	return err
-	// }
-	// defer conn.Close()
 
-	// err = conn.Bind(l.Opts.BindDn, l.Opts.BindPass)
-	// if err != nil {
-	// 	return err
-	// }
  	searchRequest := ldap.NewSearchRequest(
 		l.Opts.BaseDN, //binddn, //"dc=example,dc=com", // The base dn to search
 		ldap.ScopeWholeSubtree, ldap.NeverDerefAliases, 0, 0, false,
@@ -109,6 +90,13 @@ func (l *Ldap) Auth(username, password string) error {
 }
 
 
+func (l *Ldap) Add(addRequest *ldap.AddRequest) error {
+	err := l.LdapConn.Add(addRequest)
+	if err != nil {
+		return err
+	}
+	return nil
+}
 // func (l *Ldap) LdapClose() error {
 // 	l.Conn.Close()
 // 	return nil
