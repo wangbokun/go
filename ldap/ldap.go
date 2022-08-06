@@ -63,6 +63,24 @@ func (l *Ldap) Search() (*ldap.SearchResult, error) {
 
 }
 
+func (l *Ldap) SearchUser(baseDN string,authFilter string,searchField []string) (*ldap.SearchResult, error) {
+
+  	searchRequest := ldap.NewSearchRequest(
+		baseDN, // The base dn to search
+		ldap.ScopeWholeSubtree,ldap.NeverDerefAliases,0,0,false,
+		fmt.Sprintf(authFilter),             //"(cn=*)" The filter to apply
+		searchField, // A list attributes to retrieve
+		nil,
+	)
+ 	// res, err := conn.Search(searchRequest)
+	res, err := l.LdapConn.SearchWithPaging(searchRequest,10)
+ 	if err != nil {
+ 		return nil, err
+	}
+	return res, nil
+
+}
+
 func (l *Ldap) Auth(username, password string) error {
 
  	searchRequest := ldap.NewSearchRequest(
