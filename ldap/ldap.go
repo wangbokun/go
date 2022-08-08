@@ -64,10 +64,10 @@ func (l *Ldap) Search() (*ldap.SearchResult, error) {
 
 }
 
-func (l *Ldap) SearchUser(authFilter string, searchField []string) (*ldap.SearchResult, error) {
+func (l *Ldap) Searchobject(baseDN string, authFilter string, searchField []string) (*ldap.SearchResult, error) {
 
 	searchRequest := ldap.NewSearchRequest(
-		l.Opts.BaseDN, // The base dn to search
+		baseDN, // The base dn to search
 		ldap.ScopeWholeSubtree, ldap.NeverDerefAliases, 0, 0, false,
 		fmt.Sprintf(authFilter), //"(cn=*)" The filter to apply
 		searchField,             // A list attributes to retrieve
