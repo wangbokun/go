@@ -73,7 +73,7 @@ func (l *Ldap) Searchobject(baseDN string, authFilter string, searchField []stri
 		searchField,             // A list attributes to retrieve
 		nil,
 	)
-	res, err := conn.Search(searchRequest)
+	res, err := l.LdapConn.Search(searchRequest)
 	//res, err := l.LdapConn.SearchWithPaging(searchRequest, 10)
 	if err != nil {
 		return nil, err
